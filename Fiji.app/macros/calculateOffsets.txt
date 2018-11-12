@@ -1,0 +1,36 @@
+// large videos sometimes need to be processed batchwise due to memory constraints. If images in a movie are registered batchwise
+// (each movie registered to the first frame of the batch) then ROIs may not line up across batches. This script aligns an average image 
+// for each batch, and generates a batch-to-batch offset measure that can be used to correct for ROI location among different batches.
+// Requires Turboreg.
+// Assumes a specific folder hierarchy found in readme.
+// Assumes first image (by folder hierarchy/order) is the target image against which other images will be corrected.
+
+mouseFolder = "RAYMOND - 05.07.2018 - MOUSE 1193"; //which mouse movie to use
+landmarkX = "80";
+landmarkY = "290";
+
+setBatchMode(true);
+
+readDirectory = "E:\\RAYMOND\\Images+Offsets\\" + mouseFolder;
+
+files = getFileList(readDirectory); //directory should only contain folders; one folder for each batch
+
+targetMovie = "placeholder";
+targetMovieDirectory = "placeholder";
+
+for (i = 0; i<files.length; i++) {
+	currentMovieDirectory = readDirectory + "\\" + files[i];
+	averageMovie = getFileList(currentMovieDirectory);
+	if (i == 0) {
+		targetMovie = averageMovie;
+		targetMovieDirectory = currentMovieDirectory;		
+		}
+	
+	open(currentMovieDirectory + averageMovie[0]);
+	open(targetMovieDirectory + targetMovie[0]);
+	run("TurboReg ", "-align -window " + targetMovie[0] + " 0 0 511 511 -window " + averageMovie[0] + " 0 0 511 511 -translation " + landmarkX + " " + landmarkY + " " + landmarkX + " " + landmarkY + " -showOutput");
+	saveAs("results", currentMovieDirectory + "\\offset.csv");
+	run("Close All");
+}
+	
+
