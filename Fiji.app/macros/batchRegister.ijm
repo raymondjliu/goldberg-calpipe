@@ -2,7 +2,7 @@
 // assumes two-channel (Ch1 and Ch4) image capture as well as folder hierarchy mouse\Tseries\tiff files. Will throw errors if either is not the case.
 // for some reason, macro often fails on first run, no idea why. running again fixes the problem.
 
-mouseFolder = "RAYMOND - 06.14.2018 - MOUSE 1345";
+mouseFolder = "RAYMOND - 04.29.2018 - MOUSE 1189";
 batchSize = 5000;// size of each image chunk. Will not process the remainder if batchSize does not divide evenly into the number of frames. Setting >30000 may tax memory usage.
 setBatchMode(true);
 
@@ -20,21 +20,24 @@ for (i = 0; i<files.length; i++) {
 numberOfFrames = 0; 
 print("getting file list.");
 TSeriesFiles = getFileList(TSeriesDirectory);
+Array.sort(TSeriesFiles);
 for (i = 0; i<TSeriesFiles.length; i++) {
 	if (endsWith(TSeriesFiles[i], ".ome.tif")) {
 		numberOfFrames++;
 	} else {
-		// File.rename(TSeriesDirectory + TSeriesFiles[i], TSeriesDirectory + "zzz" + TSeriesFiles[i]);
+		print(File.rename(TSeriesDirectory + TSeriesFiles[i], TSeriesDirectory + "zzz" + TSeriesFiles[i]));
+		print("rename loop entered at index" + i);
 	}
 }
 
+Array.sort(TSeriesFiles);
 if (numberOfFrames % 2 != 0)
 	print("odd number of frames in directory. check directory for any modifications.");
 
 numberOfFrames = floor(numberOfFrames / 2);
 File.makeDirectory(writeDirectory);
 
-for (i = 0; i < 0; i++) {
+for (i = 0; i<floor(numberOfFrames/batchSize); i++) {
 
 	indexIn = toString(i*batchSize+1);
 	indexOut = toString(i*batchSize+batchSize);
@@ -68,7 +71,7 @@ for (i = 0; i < 0; i++) {
 	
 }
 
-for (i = 2; i<floor(numberOfFrames/batchSize); i++) {
+for (i = 0; i<floor(numberOfFrames/batchSize); i++) {
 
 	indexIn = toString(i*batchSize+1);
 	indexOut = toString(i*batchSize+batchSize);

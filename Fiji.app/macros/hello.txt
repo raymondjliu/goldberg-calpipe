@@ -1,0 +1,12 @@
+#@ String(label="plase") input
+#@output output
+
+print("hello world")
+
+try:
+	print("trying!")
+	print(lol)
+except:
+	print("uh oh")
+
+output = input

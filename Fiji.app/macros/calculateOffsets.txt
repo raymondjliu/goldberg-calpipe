@@ -11,7 +11,7 @@ landmarkY = "290";
 
 setBatchMode(true);
 
-readDirectory = "E:\\RAYMOND\\Images+Offsets\\" + mouseFolder;
+readDirectory = "Z:\\Raymond\\TrpM2-Cre Data\\Images+Offsets\\" + mouseFolder;
 
 files = getFileList(readDirectory); //directory should only contain folders; one folder for each batch
 
