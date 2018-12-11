@@ -2,12 +2,12 @@
 // assumes two-channel (Ch1 and Ch4) image capture as well as folder hierarchy mouse\Tseries\tiff files. Will throw errors if either is not the case.
 // for some reason, macro often fails on first run, no idea why. running again fixes the problem.
 
-mouseFolder = "RAYMOND - 04.29.2018 - MOUSE 1189";
+mouseFolder = "RAYMOND-06.14.2018-MOUSE-1376";
 batchSize = 5000;// size of each image chunk. Will not process the remainder if batchSize does not divide evenly into the number of frames. Setting >30000 may tax memory usage.
 setBatchMode(true);
 
-mouseDirectory = "Z:\\Raymond\\TrpM2-Cre Data\\Raw\\" + mouseFolder; // path to where TSeries is saved.
-writeDirectory = "Z:\\Raymond\\TrpM2-Cre Data\\Movies\\" + mouseFolder;
+mouseDirectory = "Z:\\Raymond\\TrpM2-Cre-Data\\Raw\\" + mouseFolder; // path to where TSeries is saved.
+writeDirectory = "Z:\\Raymond\\TrpM2-Cre-Data\\Movies\\" + mouseFolder;
 
 files = getFileList(mouseDirectory);
 
@@ -91,7 +91,6 @@ for (i = 0; i<floor(numberOfFrames/batchSize); i++) {
 		open(TSeriesDirectory + TSeriesFiles[numberOfFrames + i*batchSize + j]);
 		print(j+1);
 		run("TurboReg ", "-align -window " + TSeriesFiles[numberOfFrames + i*batchSize+j] + " 0 0 511 511 -window " + TSeriesFiles[numberOfFrames + batchSize*i] + " 0 0 511 511 -translation 255 255 255 255 -showOutput");
-		print("reg done");
 		run("Duplicate...", "title=Output");
 
 		print("duplicated");
